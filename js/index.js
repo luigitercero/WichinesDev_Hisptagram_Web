@@ -17,7 +17,7 @@ var ref_Publicaciones = firebase.database().ref('publicacion');
         $(document).ready(function () 
         {
             $scope.texto = "Hola Luis!";
-            var publicaciones = $firebaseArray(ref_Publicaciones);
+            var publicaciones = $firebaseArray(ref_Publicaciones.orderByChild("fecha").limitToFirst(8));
             publicaciones.$loaded().then(function()
             {
                 publicaciones.forEach(p => 
