@@ -1,5 +1,6 @@
 
-var ref_Publicaciones = firebase.database().ref('publicacion');
+var REF_PUBLICATIONS = firebase.database().ref('publicacion');
+var USERNAME = "Invitado";
 
 (function () 
 {
@@ -7,23 +8,34 @@ var ref_Publicaciones = firebase.database().ref('publicacion');
 
     app.controller("ctrl", function($scope, $firebaseArray, $firebaseObject) {
 
-        // var ref = firebase.database().ref();
-        // download the data into a local object
-        // $scope.data = $firebaseObject(ref);
-        // putting a console.log here won't work, see below
+        // LUIS
+        $scope.setLike = function(idPublication)
+        {
+            console.log("like! "+idPublication);
+        }
 
+        // LUIS
+        $scope.setDislike = function(idPublication)
+        {
+            console.log("dislike! "+idPublication);
+        }
 
-
+        // LUIS
         $(document).ready(function () 
         {
-            $scope.texto = "Hola Luis!";
-            var publicaciones = $firebaseArray(ref_Publicaciones.orderByChild("fecha").limitToFirst(8));
-            publicaciones.$loaded().then(function()
+            $('.collapsible').collapsible();
+            $('.sidenav').sidenav();
+            $('.tabs').tabs();
+
+            $scope.text = "Hola "+USERNAME+" !";
+            var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToFirst(8));
+            $scope.publications = publications;
+            publications.$loaded().then(function()
             {
-                publicaciones.forEach(p => 
+                /*publicaciones.forEach(p => 
                 {
                     console.log(p);
-                });
+                });*/
             });
         });
 
