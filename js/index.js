@@ -1,11 +1,10 @@
 
 var ref_Publicaciones = firebase.database().ref('publicacion');
 
-(function () 
-{
+(function () {
     var app = angular.module("app", ["firebase"]);
 
-    app.controller("ctrl", function($scope, $firebaseArray, $firebaseObject) {
+    app.controller("ctrl", function ($scope, $firebaseArray, $firebaseObject) {
 
         // var ref = firebase.database().ref();
         // download the data into a local object
@@ -14,19 +13,16 @@ var ref_Publicaciones = firebase.database().ref('publicacion');
 
 
 
-        $(document).ready(function () 
-        {
+        $(document).ready(function () {
             $scope.texto = "Hola Luis!";
             var publicaciones = $firebaseArray(ref_Publicaciones);
-            publicaciones.$loaded().then(function()
-            {
-                publicaciones.forEach(p => 
-                {
+            publicaciones.$loaded().then(function () {
+                publicaciones.forEach(p => {
                     console.log(p);
                 });
             });
         });
 
 
-      });
+    });
 })()
