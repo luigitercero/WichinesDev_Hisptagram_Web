@@ -152,7 +152,7 @@ var USERLOGIN = true;
             }
             else
             {
-                var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToFirst(8));
+                var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToLast(8));
                 $scope.publications = publications;
             }
         }
@@ -172,7 +172,7 @@ var USERLOGIN = true;
                 $scope.text = "Hola "+USERNAME+" !";
             });
 
-            var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToFirst(8));
+            var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToLast(10));
             $scope.publications = publications;
             publications.$loaded().then(function()
             {

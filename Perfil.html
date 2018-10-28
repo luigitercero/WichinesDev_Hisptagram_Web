@@ -1,10 +1,20 @@
-<html>
+<html ng-app="app">
 
 <head>
     <title></title>
     <meta content="">
     <style></style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--AngularJS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+    <!--firebase auth to db-->
+    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+    
+    <script src="js/firebasedbstring.js"></script>
+
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <!--jQuery-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -25,8 +35,7 @@
 }
 </style>
 
-<body>
-
+<body ng-controller="ctrl">
 
     <nav>
         <div class="nav-wrapper">
@@ -36,9 +45,9 @@
 
 
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="sass.html">Sass</a></li>
-                <li><a href="badges.html">Components</a></li>
-                <li><a href="collapsible.html">JavaScript</a></li>
+                <li><a href="Usuario.html">{{ username }}</a></li>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="Login.html">Salir</a></li>
 
             </ul>
             <div class="right">
@@ -72,95 +81,74 @@
         <li><a class="subheader">Subheader</a></li>
         <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
     </ul>
-    <br />
+    <br/>
     <div class="container">
         <div class="row">
             <div class="col s4">
-                <img src="images/sample-1.jpg" alt="" class="circle responsive-img">
+                
             </div>
             <div class="col s4 offset-s4">
 
-                <h2>Canche</h2>
-                <h6>
-                    y me gusta el camote xoxoxo
-                </h6>
-
+                <h2>{{ username }}</h2>
+                
             </div>
         </div>
-        <a class=" right btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add_a_photo</i></a>
+        <a class=" right btn-floating btn-large waves-effect waves-light red" ng-click="publishPost()"><i class="material-icons">add_a_photo</i></a>
 
         <br />
         <br />
         <br />
         <div class="row">
-            <div class="col s12 m4">
+
+            <div class="col s12 m4" ng-repeat="p in posts">
                 <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator" src="images/sample-1.jpg">
+                        <img class="activator" src="{{ p.imagen }}">
                     </div>
                     <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                        <p><a href="#">This is a link</a></p>
+                        <p class="card-title activator grey-text text-darken-4">{{ p.contenido | limitTo: 25 }}...<i class="material-icons right">more_vert</i></p>
+                        <a class="waves-effect waves-light btn" ng-click="deletePost(p.$id)"><i class="material-icons right">close</i>Eliminar</a>
+                    
                     </div>
                     <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m4">
-                <div class="card">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator" src="images/sample-1.jpg">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                        <p><a href="#">This is a link</a></p>
-                    </div>
-                    <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                        <span class="card-title grey-text text-darken-4">Publicacion<i class="material-icons right">close</i></span>
+                        <p>{{ p.contenido | limitTo: 128 }}</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col s12 m4">
-                <div class="card">
-                    <div class="card-image waves-effect waves-block waves-light">
-                        <img class="activator" src="images/sample-1.jpg">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                        <p><a href="#">This is a link</a></p>
-                    </div>
-                    <div class="card-reveal">
-                        <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                        <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+    </div>
+    <script src="js/materialize.min.js"></script>
+    
+<!-- Modal Structure -->
+<div id="modal" class="modal">
 
-
+    <div class="modal-content">
+        <h4 class="center">Agregar publicación</h4>
+        <br>
+        Contenido (128 caracteres máximo)
+        <textarea rows="50" cols="50" ng-model="textPost">
+        </textarea>
+        Hashtags (separados por coma)
+        <input type="text" name="lname" ng-model="postHashtags">
+        <div>
+            <progress value="0" max="100" id="uploader">0%</progress>
+            <input type="file" value="upload" id="fileButton" class="waves-effect waves-light btn"/>
+        </div>
+        
     </div>
 
-
-
-
-
-    <script src="js/materialize.min.js"></script>
-    <script>
-
-
-        $(document).ready(function () {
-            $('.collapsible').collapsible();
-
-            $('.sidenav').sidenav();
-            $('.tabs').tabs();
-        });
-    </script>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
+</div>
 
 </body>
+
+    <!---->
+    <script src="js/perfil.js"></script>
+    <!---->
 
 </html>
