@@ -3,8 +3,10 @@
 var REF_PUBLICATIONS = firebase.database().ref('publicacion');
 var REF_LIKEPUBLICATION = firebase.database().ref('likepublicacion');
 var REF_DISLIKEPUBLICATION = firebase.database().ref('dislikepublicacion');
+var REF_HASHTAGPUBLICATION = firebase.database().ref('hashtagpublicacion');
+var REF_USUARIOS = firebase.database().ref('usuarios');
 var USERNAME = "Invitado";
-var USERID = "random2";
+var USERID = "random1";
 var USERLOGIN = true;
 
 (function () {
@@ -122,14 +124,54 @@ var USERLOGIN = true;
             xhr.send(data);
         }
 
+        $scope.openModal = function(post)
+        {
+            console.log("Abriendo...", post);
+            $scope.modalPost = post;
+            $(".modal").modal("open");
+        }
+
+        $scope.searchPost = function(hashtagPost)
+        {
+            if(hashtagPost !== "")
+            {
+                console.log(hashtagPost);
+                var realTimeFilteredPosts = [];
+                var filteredPosts = $firebaseArray(REF_HASHTAGPUBLICATION.orderByChild(hashtagPost).equalTo(true));
+                
+                filteredPosts.$loaded().then(function()
+                {
+                    //console.log(filteredPosts);
+                    filteredPosts.forEach(p => 
+                    {
+                        var realTimePost = $firebaseObject(REF_PUBLICATIONS.child(p.$id));
+                        realTimeFilteredPosts.push(realTimePost);
+                    });
+                    $scope.publications = realTimeFilteredPosts;
+                });
+            }
+            else
+            {
+                var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToFirst(8));
+                $scope.publications = publications;
+            }
+        }
+
         // LUIS
         $(document).ready(function () 
         {
             $('.collapsible').collapsible();
             $('.sidenav').sidenav();
             $('.tabs').tabs();
+            $('.modal').modal();
 
-            $scope.text = "Hola "+USERNAME+" !";
+            var user = $firebaseObject(REF_USUARIOS.child(USERID));
+            user.$loaded().then(function()
+            {
+                USERNAME = user.nombre;
+                $scope.text = "Hola "+USERNAME+" !";
+            });
+
             var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToFirst(8));
             $scope.publications = publications;
             publications.$loaded().then(function()
