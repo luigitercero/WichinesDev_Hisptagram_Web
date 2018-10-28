@@ -17,11 +17,9 @@ btnRegister.addEventListener('click', e => {
     const promise = auth.createUserWithEmailAndPassword(email, clave);
     promise.catch(e => console.log(e.message));
 })
-
 btnLogout.addEventListener('click', e => {
     firebase.auth().signOut();
 })
-
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser) {
         console.log(firebaseUser);
