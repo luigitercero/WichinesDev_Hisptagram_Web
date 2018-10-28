@@ -41,6 +41,7 @@
 
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="Usuario.html">{{ text }}</a></li>
+        <li ng-show="logedin"><a href="Perfil.html">Mis publicaciones</a></li>
         <li ng-show="logedin"><a href="collapsible.html">Salir</a></li>
       </ul>
 
@@ -88,7 +89,7 @@
           <span class="card-title">{{ p.nombre }}</span>
         </div>
         <div class="card-content">
-          <p>{{ p.contenido | limitTo: 156 }}</p>
+          <p>{{ p.contenido | limitTo: 50 }}...</p>
         </div>
         <div class="card-action" ng-show="logedin">
           <a><i class="tiny material-icons" ng-click="setLike(p.$id, p.usuario)">thumb_up</i>: {{ p.likes }}</a> &nbsp;&nbsp; &nbsp;&nbsp; <i class="tiny material-icons" ng-click="setDislike(p.$id, p.usuario)">thumb_down</i>: {{ p.dislikes }}
