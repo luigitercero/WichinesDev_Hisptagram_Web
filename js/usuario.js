@@ -30,12 +30,52 @@ var USERLOGIN = true;
 
         $scope.updateUser = function()
         {
-            $scope.user.$save().then(function()
+            var xhr = new XMLHttpRequest();
+            var url = "http://192.168.0.10:3005/updateUser";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () 
             {
-                location.reload();
-            });
+                if (xhr.readyState === 4 && xhr.status === 200) 
+                {
+                    location.reload();
+                }
+            };
+            var userToUpdate = {};
+            
+            userToUpdate.id = USERID;
+            userToUpdate.edad = $scope.user.edad;
+            userToUpdate.nombre = $scope.user.nombre;
+            userToUpdate.pass = $scope.user.pass;
+            console.log(userToUpdate);
+
+            var data = JSON.stringify(userToUpdate);
+            xhr.send(data);
         }
 
+        //LUIS
+        $scope.deleteUser = function()
+        {
+            console.log("Borrando...");
+            var xhr = new XMLHttpRequest();
+            var url = "http://192.168.0.10:3005/updateUser";
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () 
+            {
+                if (xhr.readyState === 4 && xhr.status === 200) 
+                {
+                    location.reload();
+                }
+            };
+            var userToDelete = {};
+            
+            userToDelete.id = USERID;
+            console.log(userToDelete);
+
+            var data = JSON.stringify(userToDelete);
+            xhr.send(data);
+        }
         // LUIS
         $(document).ready(function () 
         {
