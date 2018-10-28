@@ -14,18 +14,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
     <!--firebase auth to db-->
     <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyDtcfiG8xKUnspkThSUnr3-ulGUvZjcgAo",
-            authDomain: "deep-pursuit-174322.firebaseapp.com",
-            databaseURL: "https://deep-pursuit-174322.firebaseio.com",
-            projectId: "deep-pursuit-174322",
-            storageBucket: "deep-pursuit-174322.appspot.com",
-            messagingSenderId: "595740310600"
-        };
-        firebase.initializeApp(config);
-    </script>
+
+    <script src="js/firebasedbstring.js"></script>
+
     <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
     <!--jQuery-->
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -48,47 +39,7 @@
     <input type="file" value="upload" id="fileButton" />
     <script src="js/materialize.min.js"></script>
     <script src="js/publicar.js"></script>
-    <script>
 
-        /*obtener valores de los elementos que se utilizan para subir una imagen*/
-        var uploader = document.getElementById('uploader');
-        var fileButton = document.getElementById('fileButton');
-        /**
-         * vigila seleccion de archivo
-        */
-        "use strict";
-        fileButton.addEventListener('change', function (e) {
-            //obtener el archivo
-
-            var file = e.target.files[0];
-
-            //crer una referencia al storage de firebase
-            var storageRef = firebase.storage().ref('myPhotos/' + file.name);
-
-            //subir archivo
-            var task = storageRef.put(file);
-
-
-            task.on('state_changed',
-                function progress(snapshot) {
-                    var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    uploader.value = percentage;
-                    console.log(snapshot);
-                },
-                function error(err) {
-
-                },
-                function complete() {
-                    console.log("hola");
-                    task.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                        console.log('File available at', downloadURL);
-                    });
-
-                    console.log("adios");
-                }
-            )
-        })
-    </script>
 </body>
 
 </html>
