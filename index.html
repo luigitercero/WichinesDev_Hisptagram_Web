@@ -4,7 +4,11 @@
 <head>
   <title></title>
   <meta content="">
-  <style></style>
+  <style>
+.center {
+    text-align: center;
+}
+</style>
   <!--AngularJS-->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
   <!--firebase auth to db-->
@@ -18,6 +22,8 @@
   <!---->
   <script src="js/index.js"></script>
   <!---->
+  
+  <script src="js/materialize.min.js"></script>
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
@@ -30,25 +36,24 @@
 <body  ng-controller="ctrl">
   <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Logo</a>
+      <a href="#" class="brand-logo">Hipstagram</a>
       <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
-
-
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li ng-click="publishTest()">{{ text }}</li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">JavaScript</a></li>
-
+        <li><a href="Usuario.html">{{ text }}</a></li>
+        <li ng-show="logedin"><a href="collapsible.html">Salir</a></li>
       </ul>
+
       <div class="right">
-        <form>
-          <div class="input-field">
-            <input id="search" type="search" required>
-            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-            <i class="material-icons">close</i>
-          </div>
-        </form>
+          <form>
+              <div class="input-field">
+                
+                  <input id="search" type="search" ng-model="searchVariable" ng-change="searchPost(searchVariable)">
+                  <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                  <i class="material-icons">close</i>
+              </div>
+          </form>
+      </div>
       </div>
 
     </div>
@@ -73,14 +78,14 @@
     <li><a class="subheader">Subheader</a></li>
     <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
   </ul>
+  <!--PUBLICACION-->
   <div class="row">
 
-    <!--PUBLICACION-->
     <div class="col s12 m3" ng-repeat="p in publications">
       <div class="card">
         <div class="card-image">
           <img src="{{ p.imagen }}">
-          <span class="card-title">{{ p.usuario }}</span>
+          <span class="card-title">{{ p.nombre }}</span>
         </div>
         <div class="card-content">
           <p>{{ p.contenido | limitTo: 156 }}</p>
@@ -89,7 +94,10 @@
           <a><i class="tiny material-icons" ng-click="setLike(p.$id, p.usuario)">thumb_up</i>: {{ p.likes }}</a> &nbsp;&nbsp; &nbsp;&nbsp; <i class="tiny material-icons" ng-click="setDislike(p.$id, p.usuario)">thumb_down</i>: {{ p.dislikes }}
         </div>
         <div class="card-action">
-          <a href="#">Ver publicacion</a>
+          <h6 ng-repeat="h in p.hashtags">#{{ h }}</h6>
+        </div>
+        <div class="card-action">
+          <a ng-click="openModal(p)">Ver publicacion</a>
         </div>
       </div>
     </div>
@@ -97,18 +105,17 @@
   </div>
 
  <!-- Modal Structure -->
- <div id="modal1" class="modal">
+ <div id="modal" class="modal">
     <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
+      <h4 class="center">{{ modalPost.nombre }}</h4>
+      <img class="responsive-img center" src="{{ modalPost.imagen }}">
+      <br>
+      <p class="center">{{ modalPost.contenido }}</p>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
     </div>
   </div>
-
-
-  <script src="js/materialize.min.js"></script>
 
 </body>
 
