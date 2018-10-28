@@ -7,11 +7,10 @@ var USERNAME = "Invitado";
 var USERID = "random2";
 var USERLOGIN = true;
 
-(function () 
-{
+(function () {
     var app = angular.module("app", ["firebase"]);
 
-    app.controller("ctrl", function($scope, $firebaseArray, $firebaseObject) {
+    app.controller("ctrl", function ($scope, $firebaseArray, $firebaseObject) {
 
         $scope.logedin = USERLOGIN;
         // LUIS
@@ -143,5 +142,7 @@ var USERLOGIN = true;
         });
 
 
-      });
+
+    });
 })()
+
