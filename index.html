@@ -9,18 +9,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
   <!--firebase auth to db-->
   <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
-  <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyDtcfiG8xKUnspkThSUnr3-ulGUvZjcgAo",
-      authDomain: "deep-pursuit-174322.firebaseapp.com",
-      databaseURL: "https://deep-pursuit-174322.firebaseio.com",
-      projectId: "deep-pursuit-174322",
-      storageBucket: "deep-pursuit-174322.appspot.com",
-      messagingSenderId: "595740310600"
-    };
-    firebase.initializeApp(config);
-  </script>
+  
+  <script src="js/firebasedbstring.js"></script>
+
   <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
   <!--jQuery-->
   <script src="js/jquery-3.3.1.min.js"></script>
@@ -45,7 +36,7 @@
 
 
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="sass.html">{{ texto }}</a></li>
+        <li ng-click="publishTest()">{{ text }}</li>
         <li><a href="badges.html">Components</a></li>
         <li><a href="collapsible.html">JavaScript</a></li>
 
@@ -83,142 +74,42 @@
     <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
   </ul>
   <div class="row">
-    <div class="col s12 m3">
+
+    <!--PUBLICACION-->
+    <div class="col s12 m3" ng-repeat="p in publications">
       <div class="card">
         <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
+          <img src="{{ p.imagen }}">
+          <span class="card-title">{{ p.usuario }}</span>
         </div>
         <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
+          <p>{{ p.contenido | limitTo: 156 }}</p>
+        </div>
+        <div class="card-action" ng-show="logedin">
+          <a><i class="tiny material-icons" ng-click="setLike(p.$id, p.usuario)">thumb_up</i>: {{ p.likes }}</a> &nbsp;&nbsp; &nbsp;&nbsp; <i class="tiny material-icons" ng-click="setDislike(p.$id, p.usuario)">thumb_down</i>: {{ p.dislikes }}
         </div>
         <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m3">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m3">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m3">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m3">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m3">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m3">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m3">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
+          <a href="#">Ver publicacion</a>
         </div>
       </div>
     </div>
 
   </div>
 
+ <!-- Modal Structure -->
+ <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+
 
   <script src="js/materialize.min.js"></script>
-  <script src="js/publicar.js"></script>
-  <script>
 
-
-    $(document).ready(function () {
-      $('.collapsible').collapsible();
-
-      $('.sidenav').sidenav();
-      $('.tabs').tabs();
-    });
-  </script>
 
 </body>
 
