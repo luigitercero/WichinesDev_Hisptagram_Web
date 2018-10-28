@@ -43,68 +43,63 @@
 </head>
 
 <body ng-controller="ctrl">
-
-   
     <script src="js/materialize.min.js"></script>
-   <div class = "container">
-    <div id="login-page" class="row">
-        <div class="col s5 offset-s3 z-depth-6 card-panel">
-            <form class="login-form">
-                <div class="row">
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">mail_outline</i>
-                        <input class="validate" id="txtEmail" type="email">
-                        <label for="email" data-error="wrong" data-success="right">Email</label>
+    <div class="container">
+        <div id="login-page" class="row">
+            <div class="col s5 offset-s3 z-depth-6 card-panel">
+                <form class="login-form">
+                    <div class="row">
                     </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">lock_outline</i>
-                        <input id="txtPassWord" type="password">
-                        <label for="password">Password</label>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">mail_outline</i>
+                            <input class="validate" id="txtEmail" type="email">
+                            <label for="email" data-error="wrong" data-success="right">Email</label>
+                        </div>
                     </div>
-                </div>
-           
-                <div class="row">
-                    <div class="input-field col s12">
-                        <a href="#" id='btnLogin' class="btn waves-effect waves-light col s12">Login</a>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock_outline</i>
+                            <input id="txtPassWord" type="password">
+                            <label for="password">Password</label>
+                        </div>
                     </div>
-                    <div class="input-field col s12">
-                        <a href="#" id='btnLogout' class="btn waves-effect waves-light col s12">Logout</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6 m6 l6">
-                        <p class="margin medium-small"><a id='btnRegister' href="#">Register Now!</a></p>
-                    </div>
-                    <div class="input-field col s6 m6 l6">
-                        <p class="margin right-align medium-small"><a href="#">Forgot password?</a></p>
-                    </div>
-                </div>
-                
 
-            </form>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <a href="#" id='btnLogin' class="btn waves-effect waves-light col s12">Login</a>
+                        </div>
+                        <div class="input-field col s12">
+                            <a href="#" id='btnLogout' class="btn waves-effect waves-light col s12">Logout</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6 m6 l6">
+                            <p class="margin medium-small"><a id='btnRegister' href="#">Register Now!</a></p>
+                        </div>
+                        <div class="input-field col s6 m6 l6">
+                            <p class="margin right-align medium-small"><a href="#">Forgot password?</a></p>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
-    </div>
-
-
-   <script>
-    const txtEmail = document.getElementById('txtEmail');
-    const txtPassWord = document.getElementById('txtPassWord');
-    const btnLogin = document.getElementById('btnLogin');
-    const btnRegister = document.getElementById('btnRegister');
-    const btnLogout = document.getElementById('btnLogout');
-    btnLogin.addEventListener('click',e=>{
-        const email = txtEmail.value;
-        const clave = txtPassWord.value;
-        const auth = firebase.auth();
-        const promise = auth.signInWithEmailAndPassword(email,clave);
-        promise.catch(e => console.log(e.message));
-    })
-    btnRegister.addEventListener('click', e => {
+    <script>
+        const txtEmail = document.getElementById('txtEmail');
+        const txtPassWord = document.getElementById('txtPassWord');
+        const btnLogin = document.getElementById('btnLogin');
+        const btnRegister = document.getElementById('btnRegister');
+        const btnLogout = document.getElementById('btnLogout');
+        btnLogin.addEventListener('click', e => {
+            const email = txtEmail.value;
+            const clave = txtPassWord.value;
+            const auth = firebase.auth();
+            const promise = auth.signInWithEmailAndPassword(email, clave);
+            promise.catch(e => console.log(e.message));
+        })
+        btnRegister.addEventListener('click', e => {
             const email = txtEmail.value;
             const clave = txtPassWord.value;
             const auth = firebase.auth();
@@ -112,22 +107,20 @@
             promise.catch(e => console.log(e.message));
         })
 
-   btnLogout.addEventListener('click', e => {
-        firebase.auth().signOut();
-    })
+        btnLogout.addEventListener('click', e => {
+            firebase.auth().signOut();
+        })
 
-    firebase.auth().onAuthStateChanged(firebaseUser=>{
-        if(firebaseUser) {
-            console.log(firebaseUser);
-            btnLogout.classList.remove('hide');
-        }else {
-            console.log('no Logueado');
-            btnLogout.classList.add('hide')
-        }
-    });
-   </script>
-
-
+        firebase.auth().onAuthStateChanged(firebaseUser => {
+            if (firebaseUser) {
+                console.log(firebaseUser);
+                btnLogout.classList.remove('hide');
+            } else {
+                console.log('no Logueado');
+                btnLogout.classList.add('hide')
+            }
+        });
+    </script>
 </body>
 
 </html>
