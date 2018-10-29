@@ -7,14 +7,48 @@ var REF_HASHTAGPUBLICATION = firebase.database().ref('hashtagpublicacion');
 var REF_USUARIOS = firebase.database().ref('usuarios');
 var USERNAME = "Invitado";
 var USERID = "random1";
-var USERLOGIN = true;
+var USERLOGIN = false;
 
 (function () {
     var app = angular.module("app", ["firebase"]);
 
     app.controller("ctrl", function ($scope, $firebaseArray, $firebaseObject) {
 
-        $scope.logedin = USERLOGIN;
+        firebase.auth().onAuthStateChanged(function(firebaseUser)
+        {
+            if(firebaseUser)
+            {
+                console.log("logeado", firebaseUser);
+                var email = firebaseUser.email;
+
+                
+                var user = $firebaseArray(REF_USUARIOS.orderByChild("correo").equalTo(email));
+                user.$loaded().then(function()
+                {
+                    var loggedUser = user[0];
+                    USERNAME = loggedUser.nombre;
+                    USERLOGIN = true;
+                    $scope.logedin = USERLOGIN;
+                    USERID = loggedUser.$id;
+                    $scope.text = "Hola "+USERNAME+" !";
+                    console.log(USERID);
+                });
+            }
+            else
+            {
+                $scope.logedin = USERLOGIN;
+                console.log("No loggeado");
+            }
+        });
+
+        // LUIS
+        $scope.logOut = function()
+        {
+            firebase.auth().signOut();
+            location.reload();
+        }
+
+
         // LUIS
         $scope.setLike = async function(idPublication, idUser)
         {
@@ -164,13 +198,6 @@ var USERLOGIN = true;
             $('.sidenav').sidenav();
             $('.tabs').tabs();
             $('.modal').modal();
-
-            var user = $firebaseObject(REF_USUARIOS.child(USERID));
-            user.$loaded().then(function()
-            {
-                USERNAME = user.nombre;
-                $scope.text = "Hola "+USERNAME+" !";
-            });
 
             var publications = $firebaseArray(REF_PUBLICATIONS.orderByChild("fecha").limitToLast(10));
             $scope.publications = publications;

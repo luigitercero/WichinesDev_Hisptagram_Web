@@ -8,7 +8,11 @@ btnLogin.addEventListener('click', e => {
     const clave = txtPassWord.value;
     const auth = firebase.auth();
     const promise = auth.signInWithEmailAndPassword(email, clave);
-    promise.catch(e => console.log(e.message));
+    promise.then(function()
+    {
+        console.log("Login exitoso!");
+        document.location = "index.html";
+    }).catch(e => console.log("Error al ingresar: "+e.message));
 })
 btnRegister.addEventListener('click', e => {
     const email = txtEmail.value;

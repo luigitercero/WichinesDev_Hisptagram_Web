@@ -15,6 +15,48 @@ var USERLOGIN = true;
 
     app.controller("ctrl", function ($scope, $firebaseArray, $firebaseObject) {
   
+        firebase.auth().onAuthStateChanged(function(firebaseUser)
+        {
+            if(firebaseUser)
+            {
+                console.log("logeado", firebaseUser);
+                var email = firebaseUser.email;
+
+                
+                var user = $firebaseArray(REF_USUARIOS.orderByChild("correo").equalTo(email));
+                user.$loaded().then(function()
+                {
+                    var loggedUser = user[0];
+                    USERNAME = loggedUser.nombre;
+                    USERLOGIN = true;
+                    $scope.logedin = USERLOGIN;
+                    $scope.username = USERNAME;
+                    USERID = loggedUser.$id;
+                    $scope.text = "Hola "+USERNAME+" !";
+                    console.log(USERID);
+                    var posts = $firebaseArray(REF_PUBLICATIONS
+                        .orderByChild("usuario")
+                        .equalTo(USERID)
+                        .limitToFirst(25));
+                    $scope.posts = posts;
+                });
+            }
+            else
+            {
+                USERLOGIN = false;
+                $scope.logedin = USERLOGIN;
+                console.log("No loggeado");
+                document.location = "index.html";
+            }
+        });
+
+        // LUIS
+        $scope.logOut = function()
+        {
+            firebase.auth().signOut();
+            location.reload();
+        }
+
         // LUIS
         $scope.publishPost = function()
         {
@@ -107,18 +149,7 @@ var USERLOGIN = true;
             $('.tabs').tabs();
             $('.modal').modal();
 
-            var user = $firebaseObject(REF_USUARIOS.child(USERID));
-            user.$loaded().then(function()
-            {
-                USERNAME = user.nombre;
-                $scope.username = USERNAME;
-            });
-
-            var posts = $firebaseArray(REF_PUBLICATIONS
-                .orderByChild("usuario")
-                .equalTo(USERID)
-                .limitToFirst(25));
-            $scope.posts = posts;
+            
             /*posts.$loaded().then(function()
             {
                 posts.forEach(p => 

@@ -13,19 +13,42 @@ var USERLOGIN = true;
 
     app.controller("ctrl", function ($scope, $firebaseArray, $firebaseObject) {
 
-        $scope.logedin = USERLOGIN;
-        $scope.username = USERNAME;
-
-        //LUIS
-        function loadUserValues()
+        firebase.auth().onAuthStateChanged(function(firebaseUser)
         {
-            var user = $firebaseObject(REF_USUARIOS.child(USERID));
-            $scope.user = user;
-            user.$loaded().then(function()
+            if(firebaseUser)
             {
-                $scope.username = user.nombre;
-                USERNAME = user.nombre;
-            });
+                console.log("logeado");
+                var email = firebaseUser.email;
+
+                var user = $firebaseArray(REF_USUARIOS.orderByChild("correo").equalTo(email));
+                user.$loaded().then(function()
+                {
+                    
+                    var loggedUser = user[0];
+                    $scope.user = loggedUser;
+                    USERNAME = loggedUser.nombre;
+                    $scope.username = USERNAME;
+                    USERLOGIN = true;
+                    $scope.logedin = USERLOGIN;
+                    USERID = loggedUser.$id;
+                    $scope.text = "Hola "+USERNAME+" !";
+                    console.log(loggedUser);
+                });
+            }
+            else
+            {
+                USERLOGIN = false;
+                $scope.logedin = USERLOGIN;
+                console.log("No loggeado");
+                document.location = "index.html";
+            }
+        });
+
+        // LUIS
+        $scope.logOut = function()
+        {
+            firebase.auth().signOut();
+            location.reload();
         }
 
         $scope.updateUser = function()
@@ -83,7 +106,6 @@ var USERLOGIN = true;
             $('.sidenav').sidenav();
             $('.tabs').tabs();
             
-            loadUserValues();
         });
 
 
