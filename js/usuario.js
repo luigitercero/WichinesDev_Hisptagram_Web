@@ -7,6 +7,8 @@ var REF_USUARIOS = firebase.database().ref('usuarios');
 var USERNAME = "Invitado";
 var USERID = "random1";
 var USERLOGIN = true;
+var IP = "http://18.221.96.170:3005/";
+
 
 (function () {
     var app = angular.module("app", ["firebase"]);
@@ -53,14 +55,16 @@ var USERLOGIN = true;
 
         $scope.updateUser = function()
         {
+            console.log("Haciendo update!");
             var xhr = new XMLHttpRequest();
-            var url = "http://192.168.0.10:3005/updateUser";
+            var url = IP+"updateUser";
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () 
             {
                 if (xhr.readyState === 4 && xhr.status === 200) 
                 {
+                    console.log("Nos respondieron el update");
                     location.reload();
                 }
             };
@@ -70,7 +74,7 @@ var USERLOGIN = true;
             userToUpdate.edad = $scope.user.edad;
             userToUpdate.nombre = $scope.user.nombre;
             userToUpdate.pass = $scope.user.pass;
-            console.log(userToUpdate);
+            //console.log(userToUpdate);
 
             var data = JSON.stringify(userToUpdate);
             xhr.send(data);
@@ -81,7 +85,7 @@ var USERLOGIN = true;
         {
             console.log("Borrando...");
             var xhr = new XMLHttpRequest();
-            var url = "http://192.168.0.10:3005/updateUser";
+            var url = IP+"updateUser";
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () 

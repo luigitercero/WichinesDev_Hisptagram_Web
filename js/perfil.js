@@ -9,6 +9,7 @@ var REF_USUARIOS = firebase.database().ref('usuarios');
 var USERNAME = "Luis Gil";
 var USERID = "-LPwIAfY8evamJd7oeD9";
 var USERLOGIN = true;
+var IP = "http://18.221.96.170:3005/";
 
 (function () {
     var app = angular.module("app", ["firebase"]);
@@ -113,7 +114,7 @@ var USERLOGIN = true;
                         console.log(newPost);
 
                         var xhr = new XMLHttpRequest();
-                        var url = "http://192.168.0.10:3005/postPublication";
+                        var url = IP+"postPublication";
                         xhr.open("POST", url, true);
                         xhr.setRequestHeader("Content-Type", "application/json");
                         var data = JSON.stringify(newPost);
@@ -134,7 +135,7 @@ var USERLOGIN = true;
             var deletePost = {};
             deletePost.id = idPost;
             var xhr = new XMLHttpRequest();
-            var url = "http://192.168.0.10:3005/deletePublication";
+            var url = IP+"deletePublication";
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             var data = JSON.stringify(deletePost);

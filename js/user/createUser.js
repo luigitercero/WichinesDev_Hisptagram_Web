@@ -7,7 +7,7 @@ var REF_USUARIOS = firebase.database().ref('usuarios');
 var USERNAME = "Invitado";
 var USERID = "random1";
 var USERLOGIN = true;
-var URL = "http://localhost:3005/"+"";
+var URL = "http://18.221.96.170:3005/"+"";
 (function () {
     var app = angular.module("app", ["firebase"]);
 
