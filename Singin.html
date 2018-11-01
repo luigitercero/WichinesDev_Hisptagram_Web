@@ -34,7 +34,7 @@
 </head>
 
 <body ng-controller="ctrl">
-    {{logedin}}
+    <!--{{logedin}}-->
     <script src="js/materialize.min.js"></script>
     <div class="container">
         <div id="login-page" class="row">
@@ -44,28 +44,28 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <i class="material-icons prefix">mail_outline</i>
+                            <i class="material-icons prefix">accessibility</i>
                             <input class="validate" id="txtName" type="text" ng-model = "user.name">
-                            <label for="Name" data-error="wrong" data-success="right">Name</label>
+                            <label for="Name" data-error="wrong" data-success="right">Nombre</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">mail_outline</i>
                             <input class="validate" id="txtEmail" type="email" ng-model = "user.email">
-                            <label for="email" data-error="wrong" data-success="right">Email</label>
+                            <label for="email" data-error="wrong" data-success="right">Correo</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock_outline</i>
                             <input id="txtPassWord" type="password" ng-model = "user.password">
-                            <label for="password">Password</label>
+                            <label for="password">Contraseña</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <i class="material-icons prefix">mail_outline</i>
+                            <i class="material-icons prefix">access_time</i>
                             <input class="validate" id="txtAge" type="text" ng-model = "user.age">
                             <label for="age" data-error="wrong" data-success="right" >Edad</label>
                         </div>

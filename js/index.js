@@ -8,6 +8,8 @@ var REF_USUARIOS = firebase.database().ref('usuarios');
 var USERNAME = "Invitado";
 var USERID = "random1";
 var USERLOGIN = false;
+var CURRENTLIKE = true;
+var IP = "http://18.221.96.170:3005/";
 
 (function () {
     var app = angular.module("app", ["firebase"]);
@@ -52,40 +54,53 @@ var USERLOGIN = false;
         // LUIS
         $scope.setLike = async function(idPublication, idUser)
         {
-            console.log("like! "+idPublication+" autor: "+idUser);
-            if(idUser !== USERID)
+            console.log("prelike...");
+            if(CURRENTLIKE)
             {
-                REF_LIKEPUBLICATION
-                .child(USERID)
-                .child(idPublication)
-                .once("value")
-                .then(function(snapshot)
+                console.log("like! "+idPublication+" autor: "+idUser);
+                if(idUser !== USERID)
                 {
-                    var like_post = snapshot.val();
-                    var xhr = new XMLHttpRequest();
-                    var url = "http://192.168.0.10:3005/likePublication";
-                    xhr.open("POST", url, true);
-                    xhr.setRequestHeader("Content-Type", "application/json");
-                    var like = {};
-                    like.id = idPublication;
-                    like.userid = USERID;
-                    if(like_post)
+                    CURRENTLIKE = false;
+                    REF_LIKEPUBLICATION
+                    .child(USERID)
+                    .child(idPublication)
+                    .once("value")
+                    .then(function(snapshot)
                     {
-                        like.like = -1;
-                        var data = JSON.stringify(like);
-                        xhr.send(data);
-                    }
-                    else
-                    {
-                        like.like = 1;
-                        var data = JSON.stringify(like);
-                        xhr.send(data);
-                    }
-                });
-            }
-            else
-            {
-                console.log("No puedes darte autolike");
+                        var like_post = snapshot.val();
+                        var xhr = new XMLHttpRequest();
+                        var url = IP+"likePublication";
+                        xhr.open("POST", url, true);
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.onreadystatechange = function () 
+                        {
+                            if (xhr.readyState === 4 && xhr.status === 200) 
+                            {
+                                console.log("Respuesta recibida, procedimiento terminado: "+xhr.responseText);
+                                CURRENTLIKE = true;
+                            }
+                        };
+                        var like = {};
+                        like.id = idPublication;
+                        like.userid = USERID;
+                        if(like_post)
+                        {
+                            like.like = -1;
+                            var data = JSON.stringify(like);
+                            xhr.send(data);
+                        }
+                        else
+                        {
+                            like.like = 1;
+                            var data = JSON.stringify(like);
+                            xhr.send(data);
+                        }
+                    });
+                }
+                else
+                {
+                    console.log("No puedes darte autolike");
+                }
             }
         }
 
@@ -103,7 +118,7 @@ var USERLOGIN = false;
                 {
                     var like_post = snapshot.val();
                     var xhr = new XMLHttpRequest();
-                    var url = "http://192.168.0.10:3005/dislikePublication";
+                    var url = IP+"dislikePublication";
                     xhr.open("POST", url, true);
                     xhr.setRequestHeader("Content-Type", "application/json");
                     var like = {};
@@ -135,7 +150,7 @@ var USERLOGIN = false;
             var fecha = new Date();
             
             var xhr = new XMLHttpRequest();
-            var url = "http://192.168.0.10:3005/postPublication";
+            var url = IP+"postPublication";
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () 
