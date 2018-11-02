@@ -21,6 +21,7 @@ var IP = "http://18.221.96.170:3005/";
             if(firebaseUser)
             {
                 console.log("logeado", firebaseUser);
+                //comentario
                 var email = firebaseUser.email;
 
                 
