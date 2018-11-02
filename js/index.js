@@ -11,6 +11,8 @@ var USERLOGIN = false;
 var CURRENTLIKE = true;
 var IP = "http://18.221.96.170:3005/";//comentario
 
+//Comentando para integracion condinua
+
 (function () {
     var app = angular.module("app", ["firebase"]);
 
