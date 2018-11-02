@@ -9,7 +9,7 @@ var USERNAME = "Invitado";
 var USERID = "random1";
 var USERLOGIN = false;
 var CURRENTLIKE = true;
-var IP = "http://18.221.96.170:3005/";
+var IP = "http://18.221.96.170:3005/";//comentario
 
 (function () {
     var app = angular.module("app", ["firebase"]);
@@ -21,6 +21,7 @@ var IP = "http://18.221.96.170:3005/";
             if(firebaseUser)
             {
                 console.log("logeado", firebaseUser);
+                //comentario
                 var email = firebaseUser.email;
 
                 
